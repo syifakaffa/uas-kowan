@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: circle-calculator
+  labels:
+    app: circle-calculator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: circle-calculator
+  template:
+    metadata:
+      labels:
+        app: circle-calculator
+    spec:
+      containers:
+      - name: circle-calculator
+        image: circle-calculator:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+          name: http
+        env:
+        - name: FLASK_ENV
+          value: "production"
+        # Email configuration - Update these with your credentials
+        # For production: Use Kubernetes Secrets instead of plain text!
+        - name: EMAIL_HOST
+          value: "smtp.gmail.com"
+        - name: EMAIL_PORT
+          value: "587"
+        - name: EMAIL_USER
+          value: "your-email@gmail.com"  # CHANGE THIS!
+        - name: EMAIL_PASSWORD
+          value: "your-app-password"     # CHANGE THIS! Use K8s Secret in production!
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5

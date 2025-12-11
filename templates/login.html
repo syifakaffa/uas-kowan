@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Kalkulator Lingkaran{% endblock %}
+
+{% block content %}
+<h1>🔐 Passwordless Login</h1>
+<h2>Masukkan Email Anda</h2>
+
+<form method="POST" action="{{ url_for('login') }}">
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required 
+               placeholder="contoh@email.com">
+    </div>
+    
+    <button type="submit">Kirim OTP</button>
+</form>
+
+<div class="info-text">
+    <p>Anda akan menerima kode OTP untuk login tanpa password</p>
+</div>
+{% endblock %}
